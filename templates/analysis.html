@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Insights - Analysis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+    }
+    .navbar {
+      background-color: #333;
+      display: flex;
+      padding: 12px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 30px;
+    }
+    select, button {
+      padding: 8px;
+      margin-right: 10px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 8px;
+      background-color: #e9e9e9;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+    #salary {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="{{ url_for('overview') }}">Insights</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('analysis') }}">Analysis</a>
+    <a href="{{ url_for('location_view') }}">Location</a>
+    <a href="{{ url_for('logout') }}" style="margin-left:auto;">Logout</a>
+  </div>
+
+  <div class="container">
+    <h2>View Jobs by Company and Post Date</h2>
+
+    <label for="company">Company:</label>
+    <select id="company" onchange="updatePostDates()">
+      <option value="">-- Select Company --</option>
+      {% for c in companies %}
+        <option value="{{ c }}">{{ c }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="post_date">Post Date:</label>
+    <select id="post_date">
+      <option value="">-- Select Post Date --</option>
+    </select>
+
+    <button onclick="viewJobs()">View Jobs</button>
+
+    <h3>Job Titles:</h3>
+    <ul id="job_list"></ul>
+
+    <div id="salary"></div>
+  </div>
+
+  <script>
+    const allData = {{ job_data | safe }};
+
+    function updatePostDates() {
+      const company = document.getElementById("company").value;
+      const postDateSelect = document.getElementById("post_date");
+      postDateSelect.innerHTML = '<option value="">-- Select Post Date --</option>';
+
+      if (company && allData[company]) {
+        const dates = Object.keys(allData[company]);
+        dates.forEach(date => {
+          const opt = document.createElement("option");
+          opt.value = date;
+          opt.textContent = date;
+          postDateSelect.appendChild(opt);
+        });
+      }
+    }
+
+    function viewJobs() {
+      const company = document.getElementById("company").value;
+      const postDate = document.getElementById("post_date").value;
+      const jobList = document.getElementById("job_list");
+      const salaryDiv = document.getElementById("salary");
+      jobList.innerHTML = "";
+      salaryDiv.innerHTML = "";
+
+      if (company && postDate && allData[company] && allData[company][postDate]) {
+        allData[company][postDate].forEach(job => {
+          const li = document.createElement("li");
+          li.textContent = job.title;
+          li.onclick = () => {
+            salaryDiv.textContent = "Salary Offered: $" + job.salary;
+          };
+          jobList.appendChild(li);
+        });
+      } else {
+        jobList.innerHTML = "<li>No jobs found for the selected filters.</li>";
+      }
+    }
+  </script>
+</body>
+</html>

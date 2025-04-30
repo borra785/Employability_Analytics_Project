@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Location-Based Job Search</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: #333;
+      display: flex;
+      padding: 12px;
+    }
+    .navbar a {
+      color: white;
+      margin-right: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      padding: 30px;
+    }
+    select, button {
+      margin: 10px 10px 10px 0;
+      padding: 8px;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 8px;
+      margin: 5px 0;
+      background-color: #ddd;
+      cursor: pointer;
+    }
+    #chart {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="{{ url_for('overview') }}">Insights</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('analysis') }}">Analysis</a>
+    <a href="{{ url_for('location_view') }}">Location</a>
+    <a href="{{ url_for('logout') }}" style="margin-left:auto;">Logout</a>
+  </div>
+
+  <div class="container">
+    <h2>Search Jobs by Location and Company</h2>
+
+    <label>Select Location:</label>
+    <select id="location" onchange="loadCompanies()">
+      <option value="">-- Choose Location --</option>
+      {% for loc in locations %}
+        <option value="{{ loc }}">{{ loc }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Select Company:</label>
+    <select id="company">
+      <option value="">-- Choose Company --</option>
+    </select>
+
+    <button onclick="searchJobs()">Search Jobs</button>
+
+    <ul id="job_list"></ul>
+
+    <div id="chart"></div>
+  </div>
+
+  <script>
+    function loadCompanies() {
+      const location = document.getElementById("location").value;
+      const companyDropdown = document.getElementById("company");
+      companyDropdown.innerHTML = '<option value="">-- Choose Company --</option>';
+
+      fetch("/get_companies_by_location", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ location })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.companies) {
+          data.companies.forEach(company => {
+            const opt = document.createElement("option");
+            opt.value = company;
+            opt.textContent = company;
+            companyDropdown.appendChild(opt);
+          });
+        }
+      });
+    }
+
+    function searchJobs() {
+      const location = document.getElementById("location").value;
+      const company = document.getElementById("company").value;
+      const jobList = document.getElementById("job_list");
+      const chart = document.getElementById("chart");
+
+      jobList.innerHTML = "";
+      chart.innerHTML = "";
+
+      fetch("/get_jobs_by_location_and_company", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ location, company })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.jobs && data.jobs.length > 0) {
+          data.jobs.forEach(job => {
+            const li = document.createElement("li");
+            li.textContent = job;
+            li.onclick = () => showJobDetails(location, company, job);
+            jobList.appendChild(li);
+          });
+        } else {
+          jobList.innerHTML = "<li>No jobs found for this combination.</li>";
+        }
+      });
+    }
+
+    function showJobDetails(location, company, jobtitle) {
+      fetch("/get_job_details_by_location_and_company", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ location, company, jobtitle })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.graph) {
+          const graph = JSON.parse(data.graph);
+          Plotly.newPlot("chart", graph.data, graph.layout);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

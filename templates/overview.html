@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Overview - Job Insights</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+    }
+    .navbar {
+      background-color: #333;
+      display: flex;
+      padding: 12px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 20px 40px;
+    }
+    h2 {
+      color: #333;
+    }
+    .chart-section {
+      margin-top: 30px;
+    }
+    .chart-box {
+      margin-bottom: 60px;
+    }
+    #salaryModal {
+      display: none;
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -30%);
+      background: white;
+      padding: 20px;
+      border: 2px solid #333;
+      z-index: 1000;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      width: 300px;
+      text-align: center;
+    }
+    #salaryModal button {
+      margin-top: 15px;
+      padding: 8px 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="{{ url_for('overview') }}">Insights</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('analysis') }}">Analysis</a>
+    <a href="{{ url_for('location_view') }}">Location</a>
+    <a href="{{ url_for('logout') }}" style="margin-left:auto;">Logout</a>
+  </div>
+
+  <div class="container">
+    <h2>Welcome, {{ user }}!</h2>
+
+    <div class="chart-section">
+      <div class="chart-box">
+        <h3>Top 20 Companies with Most Job Postings</h3>
+        <div id="companyChart"></div>
+      </div>
+
+      <div class="chart-box">
+        <h3>Top 20 Job Titles by Postings (Click a Job Title to View Salary)</h3>
+        <div id="jobTitleChart"></div>
+      </div>
+
+      <div class="chart-box">
+        <h3>Top 20 Skills in Demand</h3>
+        <div id="skillsChart"></div>
+      </div>
+
+      <div class="chart-box">
+        <h3>Top 20 Job Titles by Highest Salary</h3>
+        <div id="salaryChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Salary Modal -->
+  <div id="salaryModal">
+    <h3 id="modalJobTitle"></h3>
+    <p id="modalSalary"></p>
+    <button onclick="closeModal()">Close</button>
+  </div>
+
+  <script>
+    const companyData = {{ company_chart | safe }};
+    const jobTitleData = {{ job_title_chart | safe }};
+    const skillsData = {{ skills_chart | safe }};
+    const salaries = {{ salary_data | safe }};
+    const salaryChartData = {{ highest_salary_chart | safe }};
+
+    Plotly.newPlot("companyChart", companyData.data, companyData.layout);
+    Plotly.newPlot("jobTitleChart", jobTitleData.data, jobTitleData.layout);
+    Plotly.newPlot("skillsChart", skillsData.data, skillsData.layout);
+    Plotly.newPlot("salaryChart", salaryChartData.data, salaryChartData.layout);
+
+    document.getElementById('jobTitleChart').on('plotly_click', function(data) {
+      const jobTitle = data.points[0].x;
+      const salary = salaries[jobTitle] || 'Not Available';
+      document.getElementById('modalJobTitle').innerText = jobTitle;
+      document.getElementById('modalSalary').innerText = "Salary Offered: $" + salary;
+      document.getElementById('salaryModal').style.display = 'block';
+    });
+
+    function closeModal() {
+      document.getElementById('salaryModal').style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

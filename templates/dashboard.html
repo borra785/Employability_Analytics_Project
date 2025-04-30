@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Job Role Insights</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f7f7f7;
+    }
+    .navbar {
+      background-color: #333;
+      display: flex;
+      padding: 12px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 30px;
+    }
+    select, button {
+      margin-right: 10px;
+      padding: 8px;
+    }
+    #skills_chart, #location_chart, #company_chart {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="{{ url_for('overview') }}">Insights</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('analysis') }}">Analysis</a>
+    <a href="{{ url_for('location_view') }}">Location</a>
+    <a href="{{ url_for('logout') }}" style="margin-left:auto;">Logout</a>
+  </div>
+
+  <div class="container">
+    <h2>Explore Job Role Insights</h2>
+
+    <label for="jobtitle">Select Job Title:</label>
+    <select id="jobtitle">
+      {% for title in jobtitles %}
+        <option value="{{ title }}">{{ title }}</option>
+      {% endfor %}
+    </select>
+
+    <button onclick="fetchSkillChart()">View Skills</button>
+    <button onclick="fetchLocationChart()">View Location</button>
+    <button onclick="fetchCompanyChart()">View Company</button>
+
+    <div id="skills_chart"></div>
+    <div id="location_chart"></div>
+    <div id="company_chart"></div>
+  </div>
+
+  <script>
+    function fetchSkillChart() {
+      const title = document.getElementById("jobtitle").value;
+
+      fetch("/get_skills_by_jobtitle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobtitle: title })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          const graph = JSON.parse(data.graph);
+          if (graph.data && graph.data[0].type === "pie") {
+            graph.data[0].textinfo = "label";
+            graph.data[0].hoverinfo = "none";
+          }
+          Plotly.newPlot("skills_chart", graph.data, graph.layout);
+        }
+      });
+    }
+
+    function fetchLocationChart() {
+      const title = document.getElementById("jobtitle").value;
+
+      fetch("/get_locations_by_jobtitle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobtitle: title })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          const graph = JSON.parse(data.graph);
+          Plotly.newPlot("location_chart", graph.data, graph.layout);
+        }
+      });
+    }
+
+    function fetchCompanyChart() {
+      const title = document.getElementById("jobtitle").value;
+
+      fetch("/get_companies_by_jobtitle", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobtitle: title })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          const graph = JSON.parse(data.graph);
+          Plotly.newPlot("company_chart", graph.data, graph.layout);
+        }
+      });
+    }
+
+    window.onload = fetchSkillChart;
+  </script>
+</body>
+</html>
