@@ -14,10 +14,7 @@ The application empowers users to explore job market dynamics through interactiv
 * [Usage](#usage)
 * [Features](#features)
 * [Dashboard](#dashboard)
-
-  * [Live Dashboard](#61-live-dashboard)
-  * [Embed via GitHub Pages](#62-embed-in-github-pages-static-website)
-  * [Dashboard Preview](#63-dashboard-preview)
+  * [Dashboard Preview](-dashboard-preview)
 * [Project Structure](#project-structure)
 * [Contributing](#contributing)
 * [License](#license)
