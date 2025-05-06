@@ -89,6 +89,8 @@ Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 ### Key Features:
 
 * Sign up/login to access insights
+* ![image](https://github.com/user-attachments/assets/21719d32-8401-4f32-be5b-5bb539481498)
+
 * Navigate through:
 
   * **Overview**: Top 20 companies, skills, job titles
