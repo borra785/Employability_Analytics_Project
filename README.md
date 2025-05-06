@@ -95,9 +95,14 @@ Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 * Navigate through:
 
   * **Overview**: Top 20 companies, skills, job titles
+  * ![image](https://github.com/user-attachments/assets/73d84375-83ad-4798-b575-830ddcdcb0d6)
   * **Dashboard**: Filter job title to view skills, companies, and locations
+  * ![image](https://github.com/user-attachments/assets/70669544-5606-4df4-bee9-6c2e68c62add)
   * **Analysis**: Date-wise company jobs and salaries
+  * ![image](https://github.com/user-attachments/assets/2baf3063-ddd7-4c05-9641-bf7073eed10f)
   * **Location**: City-based job title insights with pie charts
+  * ![image](https://github.com/user-attachments/assets/e5fa8f23-e393-4e8e-831f-5d5b2b7b31d0)
+
 
 ## ✨ Features
 
@@ -106,39 +111,13 @@ Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 * Interactive charts with Plotly
 * CSV dataset integration
 * Dashboard with filters and visual drilldowns
-* Power BI visualization integration
 
 ## 📊 Dashboard
-
-### 6.1 Live Dashboard
-
-Check out the interactive Power BI dashboard here:
-👉 [View Dashboard](https://app.powerbi.com/view?r=eyJrIjoiEXAMPLE123...)
-
-> 🔐 Note: "Publish to Web" makes the dashboard publicly visible.
-
-### 6.2 Embed via GitHub Pages
-
-Create a `dashboard.html` file:
-
-```html
-<!DOCTYPE html>
-<html>
-<head><title>Power BI Dashboard</title></head>
-<body>
-  <h1>Interactive Power BI Dashboard</h1>
-  <iframe width="1000" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiEXAMPLE123..." frameborder="0" allowFullScreen="true"></iframe>
-</body>
-</html>
-```
-
-Enable GitHub Pages under Settings → Pages and access:
-`https://yourusername.github.io/your-repo/dashboard.html`
-
-### 6.3 Dashboard Preview
+### Dashboard Preview
 
 ```markdown
-[![Dashboard Screenshot](images/dashboard-preview.png)](https://app.powerbi.com/view?r=eyJrIjoiEXAMPLE123...)
+[![Dashboard Screenshot](![image](https://github.com/user-attachments/assets/821a8e56-edd6-49ae-a05e-75a044cbf52b)
+)
 ```
 
 ## 📁 Project Structure
