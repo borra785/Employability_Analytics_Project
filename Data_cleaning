@@ -1,0 +1,27 @@
+import pandas as pd
+
+# Load data
+df = pd.read_csv("mrpdata.csv")
+
+# Step 1: Standardize column names
+df.columns = df.columns.str.strip().str.lower().str.replace(' ', '_')
+
+# Step 2: Remove duplicate rows based on unique job identifier or whole row
+df.drop_duplicates(subset='uniq_id', inplace=True)
+
+# Step 3: Handle missing values
+df.dropna(subset=['job_title', 'company_name', 'city', 'country', 'job_skills'], inplace=True)
+df['salary_offered'] = pd.to_numeric(df['salary_offered'], errors='coerce')
+df['salary_offered'].fillna(df['salary_offered'].median(), inplace=True)
+
+# Step 4: Clean and standardize job_skills
+df['job_skills'] = df['job_skills'].apply(
+    lambda x: ', '.join(sorted(set([s.strip().lower() for s in str(x).split(',') if s.strip()])))
+)
+
+# Step 5: Standardize text formatting
+for col in ['city', 'state', 'country', 'company_name', 'job_type']:
+    df[col] = df[col].str.strip().str.title()
+
+# Save cleaned data
+df.to_csv("mrpdata_cleaned.csv", index=False)
