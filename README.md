@@ -1,149 +1,191 @@
-# Employability_Analytics_Project
-For job seekers and Career Advisors
+# Employability Analytics Application
 
-## 📝 Project Description  
+*A web-based dashboard to analyze job market trends for software developers.*
+
+## 📋 Project Description
+
 This project is a web-based employability analytics application designed to help software developers and career analysts understand the evolving job market. It analyzes job postings to extract insights on top companies, in-demand skills, preferred job locations, salary trends, and job types.
 
 The application empowers users to explore job market dynamics through interactive charts and dashboards, making it easier to identify hiring patterns, skill gaps, and employment opportunities in the software development field.
 
-## 📚 Table of Contents  
-- [Project Description](#-project-description)  
-- [Installation](#-installation)  
-- [Usage](#-usage)  
-- [Features](#-features)  
-- [📊 Dashboard](#-dashboard)  
-  - [Live Dashboard](#61-live-dashboard)  
-  - [Embed via GitHub Pages](#62-embed-in-github-pages-static-website)  
-  - [Dashboard Preview](#63-embed-a-screenshot--link-in-readme)  
-- [📁 Project Structure](#-project-structure)  
-- [🤝 Contributing](#-contributing)  
-- [📄 License](#-license)  
-- [🙏 Acknowledgements](#-acknowledgements)
+## 📂 Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Features](#features)
+* [Dashboard](#dashboard)
+
+  * [Live Dashboard](#61-live-dashboard)
+  * [Embed via GitHub Pages](#62-embed-in-github-pages-static-website)
+  * [Dashboard Preview](#63-dashboard-preview)
+* [Project Structure](#project-structure)
+* [Contributing](#contributing)
+* [License](#license)
+* [Acknowledgements](#acknowledgements)
 
 ## ⚙️ Installation / Setup (Windows)
 
 Follow the steps below to set up and run the project on a Windows machine using Visual Studio:
 
-### 1. Install Required Tools
+1. **Install Required Tools**
 
-- **Visual Studio** (Community Edition or higher)  
-  Download from: [https://visualstudio.microsoft.com/](https://visualstudio.microsoft.com/)
+   * [Visual Studio](https://visualstudio.microsoft.com/)
+   * [Python](https://www.python.org/downloads/windows/) (3.8 or higher)
+   * ✅ Ensure "Add Python to PATH" is selected during installation.
 
-- **Python** (3.8 or higher recommended)  
-  Download from: [https://www.python.org/downloads/windows/](https://www.python.org/downloads/windows/)  
-  ✅ Make sure to check the box **"Add Python to PATH"** during installation.
+2. **Clone the Repository**
 
-### 2. Clone the Repository
-
-Open Command Prompt or Git Bash and run:
 ```bash
 git clone https://github.com/yourusername/EmployabilityAnalyticsApp.git
 cd EmployabilityAnalyticsApp
+```
 
-git clone https://github.com/yourusername/EmployabilityAnalyticsApp.git
-cd EmployabilityAnalyticsApp
+3. **Set Up a Virtual Environment**
 
-## 3. Set Up a Virtual Environment
-In the project folder:
+```bash
 python -m venv venv
 venv\Scripts\activate
+```
 
-4. Install Dependencies
-Ensure you're inside the activated virtual environment, then install all required packages:
+4. **Install Dependencies**
+
+```bash
 pip install -r requirements.txt
-pip install flask pandas plotly
+```
 
+*If not available, manually install:* `flask pandas plotly`
 
-## 🚀 Usage
+5. **Open in Visual Studio**
 
-Once the project is set up and running, you can use the application to explore employability trends for software developers.
+   * Open the `Flask_Project` folder
+   * Adjust code formatting via `Tools > Options > Text Editor > Python`
+   * Select the correct Python environment
 
-### 🔧 Starting the Application
-
-After activating your virtual environment, start the Flask server with:
+6. **Run the Flask App**
 
 ```bash
 python app.py
+```
 
-By default, the app will run at:
-📍 http://127.0.0.1:5000/
+Visit: [http://127.0.0.1:5000](http://127.0.0.1:5000)
 
-Open this URL in your browser to interact with the application.
+7. **Upload to GitHub (Optional)**
 
-🔍 How to Use the Application
-Sign Up or Log In
+```bash
+git init
+git remote add origin https://github.com/yourusername/EmployabilityAnalyticsApp.git
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+```
 
-Create an account or log in with existing credentials to access the dashboard.
+## 🚀 Usage
 
-Overview Page
+Start the Flask server:
 
-Explore top 20 companies, job titles, and in-demand skills via bar, area, and pie charts.
+```bash
+python app.py
+```
 
-Dashboard Page
+Then open [http://127.0.0.1:5000](http://127.0.0.1:5000) in your browser.
 
-Select a job title to filter and view:
+### Key Features:
 
-Relevant skills
+* Sign up/login to access insights
+* Navigate through:
 
-Hiring companies
+  * **Overview**: Top 20 companies, skills, job titles
+  * **Dashboard**: Filter job title to view skills, companies, and locations
+  * **Analysis**: Date-wise company jobs and salaries
+  * **Location**: City-based job title insights with pie charts
 
-Job locations
+## ✨ Features
 
-Analysis Page
+* Flask-based web application
+* Data analysis using Pandas
+* Interactive charts with Plotly
+* CSV dataset integration
+* Dashboard with filters and visual drilldowns
+* Power BI visualization integration
 
-View company-wise job trends with salaries and roles across different dates.
+## 📊 Dashboard
 
-Location Page
+### 6.1 Live Dashboard
 
-Select a location or company to see jobs available and get pie-chart breakdowns of:
+Check out the interactive Power BI dashboard here:
+👉 [View Dashboard](https://app.powerbi.com/view?r=eyJrIjoiEXAMPLE123...)
 
-Skills
+> 🔐 Note: "Publish to Web" makes the dashboard publicly visible.
 
-Job types
+### 6.2 Embed via GitHub Pages
 
-Salaries
+Create a `dashboard.html` file:
 
+```html
+<!DOCTYPE html>
+<html>
+<head><title>Power BI Dashboard</title></head>
+<body>
+  <h1>Interactive Power BI Dashboard</h1>
+  <iframe width="1000" height="600" src="https://app.powerbi.com/view?r=eyJrIjoiEXAMPLE123..." frameborder="0" allowFullScreen="true"></iframe>
+</body>
+</html>
+```
 
-── Flask_Project/
-│   ├── app.py                      # Main Flask application
-│   ├── users.json                  # User authentication data
-│   ├── static/                     # Static assets (CSS, JS)
-│   │   ├── script.js
-│   │   └── styles.css
-│   ├── templates/                  # HTML templates (pages)
-│   │   ├── analysis.html
-│   │   ├── dashboard.html
-│   │   ├── forgot_password.html
-│   │   ├── location.html
-│   │   ├── login.html
-│   │   ├── overview.html
-│   │   ├── reset_password.html
-│   │   └── signup.html
-│   └── uploads/                    # Folder for uploaded or used datasets
-│       └── data.csv
+Enable GitHub Pages under Settings → Pages and access:
+`https://yourusername.github.io/your-repo/dashboard.html`
 
+### 6.3 Dashboard Preview
 
-## 9. 🙏 Acknowledgements
+```markdown
+[![Dashboard Screenshot](images/dashboard-preview.png)](https://app.powerbi.com/view?r=eyJrIjoiEXAMPLE123...)
+```
 
-This project wouldn't have been possible without the support and tools provided by the following:
+## 📁 Project Structure
 
-- [Flask](https://flask.palletsprojects.com/) — for building the web application backend.
-- [Plotly](https://plotly.com/python/) — for creating interactive data visualizations.
-- [Visual Studio](https://visualstudio.microsoft.com/) — as the development environment.
-- [Python](https://www.python.org/) — the programming language that powers the application.
-- [Job Listings Dataset (Kaggle)](https://www.kaggle.com/datasets/jobspikr/software-developer-job-listings-usa?resource=download) — for providing real-world job posting data for analysis.
-- The open-source community — for tutorials, libraries, and documentation.
+```bash
+Flask_Project/
+├── app.py
+├── users.json
+├── static/
+│   ├── script.js
+│   └── styles.css
+├── templates/
+│   ├── analysis.html
+│   ├── dashboard.html
+│   ├── forgot_password.html
+│   ├── location.html
+│   ├── login.html
+│   ├── overview.html
+│   ├── reset_password.html
+│   └── signup.html
+├── uploads/
+│   └── data.csv
+├── requirements.txt
+└── README.md
+```
 
-Special thanks to all contributors and mentors who supported this project.
+## 👥 Contributing
 
+Pull requests are welcome! To contribute:
 
+1. Fork the repo
+2. Create a branch (`git checkout -b feature-name`)
+3. Commit your changes
+4. Push to your fork and submit a PR
 
-  
+For more guidelines, refer to [CONTRIBUTING.md](CONTRIBUTING.md) (if available).
 
+## 📄 License
 
+This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
 
+## 🙏 Acknowledgements
 
-
-  
-
-
+* [Flask](https://flask.palletsprojects.com/)
+* [Plotly](https://plotly.com/python/)
+* [Power BI](https://powerbi.microsoft.com/)
+* [Python](https://www.python.org/)
+* [Visual Studio](https://visualstudio.microsoft.com/)
+* [Kaggle Job Listings Dataset](https://www.kaggle.com/datasets/jobspikr/software-developer-job-listings-usa)
+* Open-source community for resources and documentation
